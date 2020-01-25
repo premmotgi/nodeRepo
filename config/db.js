@@ -13,7 +13,7 @@ const connectDB = async () => {
 
     });
 
-    console.log(`Conncetion established with Repository: ${repoConncection.connection.host}`);
+    console.log(`Conncetion established with Repository: ${repoConncection.connection.host}`.yellow.underline.bold);
 }
 
 

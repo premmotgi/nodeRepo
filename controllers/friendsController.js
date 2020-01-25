@@ -1,10 +1,27 @@
+const Friend = require("../model/friends");
+
 //description
 //@desc gets all the friends 
 //@route GET /api/v1/friends/
 //@access Public
-exports.getAllFriends = (req, res, next) => {
+exports.getAllFriends = async (req, res, next) => {
 
-    res.status(200).json({ status: "SUCCESS", friedList: [{ id: 1, name: "nick" }, { id: 2, name: "yudi" }, { id: 3, name: "abraham" }] });
+    try {
+
+        const responseObj = await Friend.find();
+        res.status(200).json({
+            status: "SUCCESS",
+            friends: responseObj
+
+        })
+    } catch (err) {
+        console.log(`Error: ${err.msg}`.red.bold);
+        res.status(400).json({
+            status: "FAILURE",
+
+        });
+    }
+
 
 }
 
@@ -22,9 +39,17 @@ exports.getFriend = (req, res, next) => {
 //@desc add a friend 
 //@route POST /api/v1/friends/
 //@access Private
-exports.addFriend = (req, res, next) => {
+exports.addFriend = async (req, res, next) => {
 
-    res.status(201).json({ status: "SUCCESS", friedList: [{ id: 1, name: "nick" }, { id: 2, name: "yudi" }, { id: 3, name: "abraham" }] });
+
+    const responseObject = await Friend.create(req.body);
+
+    res.status(201).json({
+
+        status: "SUCCESS",
+        data: responseObject
+
+    });
 
 }
 
