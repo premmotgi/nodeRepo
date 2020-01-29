@@ -16,11 +16,10 @@ exports.getAllFriends = async (req, res, next) => {
 
         })
     } catch (err) {
-        console.log(`Error: ${err.msg}`.red.bold);
-        res.status(400).json({
-            status: "FAILURE",
 
-        });
+        console.log(`Error: ${err.message}`.red.bold);
+        next(err);
+
     }
 
 
@@ -48,11 +47,8 @@ exports.getFriend = async (req, res, next) => {
 
         })
     } catch (err) {
-        console.log(`Error: ${err.msg}`.red.bold);
-        res.status(400).json({
-            status: "FAILURE",
-
-        });
+        console.log(`Error: ${err.message}`.red.bold);
+        next(err);
     }
 
 }
@@ -99,11 +95,9 @@ exports.updateFriend = async (req, res, next) => {
 
         })
     } catch (err) {
-        console.log(`Error: ${err.msg}`.red.bold);
-        res.status(400).json({
-            status: "FAILURE",
+        console.log(`Error: ${err.message}`.red.bold);
+        next(err);
 
-        });
     }
 
 }
@@ -128,11 +122,9 @@ exports.deleteFriend = async (req, res, next) => {
 
         })
     } catch (err) {
-        console.log(`Error: ${err.msg}`.red.bold);
-        res.status(400).json({
-            status: "FAILURE",
+        console.log(`Error: ${err.message}`.red.bold);
+        next(err);
 
-        });
     }
 
 }

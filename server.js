@@ -2,6 +2,8 @@ const express = require("express");
 const dotenv = require("dotenv");
 const morganLogger = require("morgan");
 const connectRepo = require("./config/db");
+const errorHandler = require("./middlwares/ErrorHandler");
+
 const colors = require("colors");
 
 
@@ -32,6 +34,8 @@ app.use(morganLogger('dev'));
 //Mounting services to handle urls  (takes the url and passes it to friends service)
 app.use('/api/v1/friends', friendServices);
 
+//using the error handlers
+app.use(errorHandler);
 
 
 //port related code
