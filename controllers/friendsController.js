@@ -1,5 +1,5 @@
 const Friend = require("../model/friends");
-
+const ErrorResponse = require("../commons/ErrorResponse");
 //description
 //@desc gets all the friends 
 //@route GET /api/v1/friends/
@@ -18,7 +18,8 @@ exports.getAllFriends = async (req, res, next) => {
     } catch (err) {
 
         console.log(`Error: ${err.message}`.red.bold);
-        next(err);
+        next(new ErrorResponse(`Friends Not Found`, 404));
+
 
     }
 
@@ -48,7 +49,7 @@ exports.getFriend = async (req, res, next) => {
         })
     } catch (err) {
         console.log(`Error: ${err.message}`.red.bold);
-        next(err);
+        next(new ErrorResponse(`Friend Not Found with id ${req.params.id}`, 404));
     }
 
 }
@@ -96,7 +97,7 @@ exports.updateFriend = async (req, res, next) => {
         })
     } catch (err) {
         console.log(`Error: ${err.message}`.red.bold);
-        next(err);
+        next(new ErrorResponse(`Friend Not Found with id ${req.params.id}`, 404));
 
     }
 
@@ -123,7 +124,7 @@ exports.deleteFriend = async (req, res, next) => {
         })
     } catch (err) {
         console.log(`Error: ${err.message}`.red.bold);
-        next(err);
+        next(new ErrorResponse(`Friend Not Found with id ${req.params.id}`, 404));
 
     }
 
