@@ -29,9 +29,30 @@ exports.getAllFriends = async (req, res, next) => {
 //@desc get a friend 
 //@route GET /api/v1/friends/id
 //@access Public
-exports.getFriend = (req, res, next) => {
+exports.getFriend = async (req, res, next) => {
 
-    res.status(200).json({ status: "SUCCESS", fried: { id: req.params.id, name: "nick" } });
+
+    try {
+
+        const responseObj = await Friend.findById(req.params.id);
+
+        if (!responseObj) {
+            return res.status(404).json({
+                status: "FAILURE"
+            })
+        }
+        res.status(200).json({
+            status: "SUCCESS",
+            friends: responseObj
+
+        })
+    } catch (err) {
+        console.log(`Error: ${err.msg}`.red.bold);
+        res.status(400).json({
+            status: "FAILURE",
+
+        });
+    }
 
 }
 
@@ -57,18 +78,61 @@ exports.addFriend = async (req, res, next) => {
 //@desc update a friend 
 //@route PUT /api/v1/friends/id
 //@access Private
-exports.updateFriend = (req, res, next) => {
+exports.updateFriend = async (req, res, next) => {
 
-    res.status(200).json({ status: "UPDATED", friedList: [{ id: 1, name: "nick" }, { id: 2, name: "yudi" }, { id: 3, name: "abraham" }] });
+    try {
+
+        const responseObj = await Friend.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+            runValidators: true
+        });
+
+        if (!responseObj) {
+            return res.status(404).json({
+                status: "FAILURE"
+            })
+        }
+        res.status(200).json({
+            status: "SUCCESS",
+            friends: responseObj
+
+        })
+    } catch (err) {
+        console.log(`Error: ${err.msg}`.red.bold);
+        res.status(400).json({
+            status: "FAILURE",
+
+        });
+    }
 
 }
 
 //@desc delete a friend 
 //@route DELETE /api/v1/friends/id
 //@access Private
-exports.deleteFriend = (req, res, next) => {
+exports.deleteFriend = async (req, res, next) => {
 
-    res.status(200).json({ status: "DELETED", friedList: { id: req.params.id, name: "nick" } });
+    try {
+
+        const responseObj = await Friend.findByIdAndDelete(req.params.id);
+
+        if (!responseObj) {
+            return res.status(404).json({
+                status: "FAILURE"
+            })
+        }
+        res.status(200).json({
+            status: "SUCCESS",
+            friends: responseObj
+
+        })
+    } catch (err) {
+        console.log(`Error: ${err.msg}`.red.bold);
+        res.status(400).json({
+            status: "FAILURE",
+
+        });
+    }
 
 }
 
