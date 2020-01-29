@@ -39,7 +39,8 @@ exports.getFriend = async (req, res, next) => {
 
         if (!responseObj) {
             return res.status(404).json({
-                status: "FAILURE"
+                status: "FAILURE",
+                Error: `Resource Not Found with Id or key ${req.params.id}`
             })
         }
         res.status(200).json({
@@ -49,7 +50,7 @@ exports.getFriend = async (req, res, next) => {
         })
     } catch (err) {
         console.log(`Error: ${err.message}`.red.bold);
-        next(new ErrorResponse(`Friend Not Found with id ${req.params.id}`, 404));
+        next(err);
     }
 
 }
@@ -97,7 +98,7 @@ exports.updateFriend = async (req, res, next) => {
         })
     } catch (err) {
         console.log(`Error: ${err.message}`.red.bold);
-        next(new ErrorResponse(`Friend Not Found with id ${req.params.id}`, 404));
+        next(err);
 
     }
 
@@ -124,7 +125,7 @@ exports.deleteFriend = async (req, res, next) => {
         })
     } catch (err) {
         console.log(`Error: ${err.message}`.red.bold);
-        next(new ErrorResponse(`Friend Not Found with id ${req.params.id}`, 404));
+        next(err);
 
     }
 
