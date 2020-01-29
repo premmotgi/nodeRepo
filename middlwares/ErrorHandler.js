@@ -19,6 +19,13 @@ const errorHandler = (err, req, res, next) => {
 
     }
 
+    if (err.code === 11000) {
+
+        const msg = `Friend Already exists with name: ${req.body.name}`;
+        error = new ErrorResponse(msg, 400);
+
+    }
+
     res.status(error.statusCode || 500).json({
 
         status: "Failure",

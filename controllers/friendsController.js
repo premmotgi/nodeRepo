@@ -61,15 +61,19 @@ exports.getFriend = async (req, res, next) => {
 //@access Private
 exports.addFriend = async (req, res, next) => {
 
+    try {
+        const responseObject = await Friend.create(req.body);
 
-    const responseObject = await Friend.create(req.body);
+        res.status(201).json({
 
-    res.status(201).json({
+            status: "SUCCESS",
+            data: responseObject
 
-        status: "SUCCESS",
-        data: responseObject
+        });
 
-    });
+    } catch (err) {
+        next(err);
+    }
 
 }
 
