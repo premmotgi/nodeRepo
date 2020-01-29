@@ -11,6 +11,7 @@ exports.getAllFriends = async (req, res, next) => {
         const responseObj = await Friend.find();
         res.status(200).json({
             status: "SUCCESS",
+            count: responseObj.length,
             friends: responseObj
 
         })
