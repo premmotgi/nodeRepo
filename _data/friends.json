@@ -1,0 +1,81 @@
+[
+    {
+        "_id": "5e2bdeb3ee6f46591c94de78",
+        "name": "Ajinkya",
+        "userId": 1424,
+        "website": "www.ajkove.com",
+        "priority": 5,
+        "__v": 0
+    },
+    {
+        "_id": "5e30a882dc11e036587284d3",
+        "name": "pewdiepie",
+        "userId": 1448,
+        "website": "www.pp.com",
+        "priority": 5,
+        "__v": 0
+    },
+    {
+        "_id": "5e30abc40f4c8736e89ec660",
+        "name": "Saiman Says",
+        "userId": 1428,
+        "website": "www.pp.com",
+        "priority": 3,
+        "__v": 0
+    },
+    {
+        "_id": "5e30b15a0f4c8736e89ec661",
+        "name": "S patel",
+        "userId": 1421,
+        "website": "www.sp.com",
+        "priority": 1,
+        "__v": 0
+    },
+    {
+        "_id": "5e312daf7a55fc459c453ade",
+        "name": "S aa",
+        "userId": 14121,
+        "website": "www.spa.com",
+        "priority": 1,
+        "__v": 0
+    },
+    {
+        "_id": "5e312dbd7a55fc459c453adf",
+        "name": "Prem",
+        "userId": 14121,
+        "website": "www.spa.com",
+        "priority": 1,
+        "__v": 0
+    },
+    {
+        "_id": "5e34a2d00ca5ee2714481619",
+        "name": "Carry Minati",
+        "userId": 66758,
+        "website": "www.carry.com",
+        "priority": 3,
+        "slug": "carry-minati",
+        "__v": 0
+    },
+    {
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                -121.946135,
+                37.350345
+            ],
+            "formattedAddress": "1050 Benton St, Santa Clara, CA 95050-4800, US",
+            "Street": "1050 Benton St",
+            "City": "Santa Clara",
+            "State": "CA",
+            "Zipcode": "95050-4800"
+        },
+        "_id": "5e34aeba1fafc2111052f529",
+        "name": "Technical Guruji",
+        "userId": 66738,
+        "website": "www.tg.com",
+        "priority": 3,
+        "address": "1050 Benton Street, Santa Clara 95050",
+        "slug": "technical-guruji",
+        "__v": 0
+    }
+]

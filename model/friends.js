@@ -65,26 +65,29 @@ friendSchema.pre('save', function fn(next) {
 //needs to be saved.
 //and since the geocoder is implemented with promise, we can use async await, using this wont affect here since the implementation is
 //covered by grocoder api
+
+
 friendSchema.pre('save', async function (next) {
 
-    console.log(`Calling geocoder api to get the location details for address ${this.address}`);
+    if (this.address) {
+        console.log(`Calling geocoder api to get the location details for address ${this.address}`);
 
-    //api returns the array with only one object and has many elements in it.
-    const locationDetails = await geocoder.geocode(this.address);
+        //api returns the array with only one object and has many elements in it.
+        const locationDetails = await geocoder.geocode(this.address);
 
-    //copying data from response from api to our own object.
-    this.location = {
-        //by def we have set it to point, for our relevance
-        type: 'Point',
-        coordinates: [locationDetails[0].longitude, locationDetails[0].latitude],
-        formattedAddress: locationDetails[0].formattedAddress,
-        Street: locationDetails[0].streetName,
-        City: locationDetails[0].city,
-        State: locationDetails[0].stateCode,
-        Zipcode: locationDetails[0].zipcode,
-        Countr: locationDetails[0].countryName,
+        //copying data from response from api to our own object.
+        this.location = {
+            //by def we have set it to point, for our relevance
+            type: 'Point',
+            coordinates: [locationDetails[0].longitude, locationDetails[0].latitude],
+            formattedAddress: locationDetails[0].formattedAddress,
+            Street: locationDetails[0].streetName,
+            City: locationDetails[0].city,
+            State: locationDetails[0].stateCode,
+            Zipcode: locationDetails[0].zipcode,
+            Countr: locationDetails[0].countryName,
+        }
     }
-
     //move forward
     next();
 });
