@@ -1,6 +1,12 @@
 const Friend = require("../model/friends");
 const ErrorResponse = require("../commons/ErrorResponse");
 const asyncHandler = require("../middlwares/asyncHandler");
+//for location related code
+const geocoder = require("../commons/geocoder");
+
+
+
+
 //description
 //@desc gets all the friends 
 //@route GET /api/v1/friends/
@@ -119,3 +125,44 @@ exports.deleteFriend = asyncHandler(async (req, res, next) => {
 
 
 
+//rest controller to find nearby friends
+//route GET /api/v1/friends/radius/:zipcode/:distance
+exports.getFriendByDistance = asyncHandler(async (req, res, next) => {
+
+    //copy from request url
+    const { zipcode, distance } = req.params;
+
+    //this method will giv long and lat
+    const loc = await geocoder.geocode(zipcode);
+
+    //get values from arr NOTE- DOnt miss spelling, it will cost error without warning 
+    //cold errors will lead into undirectional debusgging
+    const lat = loc[0].latitude;
+    const lng = loc[0].longitude;
+
+    console.log(lat, "---", lng);
+    //distance near =   distance you want nearby / radius of earth
+    //radius of earth = 3963 miles 
+
+    const radiusOfEarth = 3963;
+    const radiusToFindIn = distance / radiusOfEarth;
+
+
+    //this is the by def format given by mongoDB
+    const friendsNearby = await Friend.find({
+        location: {
+            $geoWithin: {
+                $centerSphere: [[lng, lat], radiusToFindIn]
+            }
+        }
+    });
+    console.log(friendsNearby)
+    res.status(200).json({
+
+        status: "SUCCESS",
+        count: friendsNearby.length,
+        NearBy_friends: friendsNearby
+
+    });
+
+});

@@ -87,6 +87,8 @@ friendSchema.pre('save', async function (next) {
             Zipcode: locationDetails[0].zipcode,
             Countr: locationDetails[0].countryName,
         }
+
+        this.address = undefined;
     }
     //move forward
     next();

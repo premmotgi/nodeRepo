@@ -9,10 +9,14 @@ const {
     getFriend,
     deleteFriend,
     updateFriend,
-    addFriend
+    addFriend,
+    getFriendByDistance
 
 } = require("../controllers/friendsController");
 
+
+//routing for nearby frinds
+router.route("/radius/:zipcode/:distance").get(getFriendByDistance);
 
 
 //calling each controller based on request url.
@@ -30,6 +34,8 @@ router.route("/:id")
 
 //to make the router work
 module.exports = router;
+
+
 
 
 
