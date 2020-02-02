@@ -6,6 +6,11 @@ const morganLogger = require("morgan");
 const connectRepo = require("./config/db");
 const errorHandler = require("./middlwares/ErrorHandler");
 const colors = require("colors");
+//to perform file related operation .. eg taking input file from user 
+const fileHandler = require("express-fileupload");
+
+//path module for file related operation
+const path = require("path");
 
 
 
@@ -13,12 +18,16 @@ const colors = require("colors");
 dotenv.config({ path: "./config/config.env" });
 
 
-
-
 const app = express();
 
 //object mapper from req body to json - accessible throughout the project
 app.use(express.json());
+
+
+//middlware for uploading file , this will alow this to be used in other classes
+app.use(fileHandler());
+//setting public as a static folder
+app.use(express.static(path.join(__dirname, 'public')))
 
 const PORT = process.env.PORT || 5000;
 connectRepo();

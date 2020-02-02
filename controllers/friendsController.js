@@ -4,7 +4,8 @@ const asyncHandler = require("../middlwares/asyncHandler");
 //for location related code
 const geocoder = require("../commons/geocoder");
 
-
+//to deal with file path- we need to get extension of image...so
+const path = require("path");
 
 
 //description
@@ -31,7 +32,6 @@ exports.getAllFriends = asyncHandler(async (req, res, next) => {
     //passing the query as json back again to mongo, we dont need to await for response here becz we will do it after we get this data
     query = Friend.find(JSON.parse(queryStr));
 
-    console.log(query);
 
     if (req.query.select) {
         //remove all commas from select query and join by space, because this way is only required to us
@@ -117,7 +117,9 @@ exports.updateFriend = asyncHandler(async (req, res, next) => {
 
 
     const responseObj = await Friend.findByIdAndUpdate(req.params.id, req.body, {
+        //store new data and return new data
         new: true,
+        //run validators for mongoose
         runValidators: true
     });
 
@@ -128,7 +130,7 @@ exports.updateFriend = asyncHandler(async (req, res, next) => {
     }
     res.status(200).json({
         status: "SUCCESS",
-        friends: responseObj
+        friend: responseObj
 
     })
 
@@ -161,6 +163,70 @@ exports.deleteFriend = asyncHandler(async (req, res, next) => {
 
 });
 
+
+//@desc upload photo 
+//@route PUT /api/v1/friends/:id/photo
+//@access Private
+exports.uploadPhoto = asyncHandler(async (req, res, next) => {
+
+    console.log(`upload photo api called`);
+
+    const responseObj = await Friend.findById(req.params.id);
+
+    //here next is for getting out of current context and then going to error context
+    if (!responseObj) {
+        return next(new ErrorResponse("Please Enter a valid userid", 404));
+    }
+
+    console.log(req.files);
+    if (!req.files) {
+        return next(new ErrorResponse("Please Upload a file", 400));
+    }
+
+
+
+    const file = req.files.file;
+    //checking if an image file
+    if (!file.mimetype.startsWith("image")) {
+        return next(new ErrorResponse("Image type not file", 400));
+    }
+
+    //check file size
+    if (file.size > process.env.MAX_FILE_UPLOAD_LIMIT) {
+        return next(new ErrorResponse(`File size exceeds ${process.env.MAX_FILE_UPLOAD_LIMIT}`, 400));
+    }
+
+    //custom name the file for user and path.parse will help to extract the extension of the file
+    file.name = `photo_${responseObj._id}${path.parse(file.name).ext}`;
+    console.log(`Changed file name to ${file.name}`);
+
+    //actual upload the file
+    file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async callBack => {
+
+        //callbacks with error if there is any
+        if (callBack) {
+
+            return next(new ErrorResponse(`Some error while saving file${file.name}`, 500));
+        }
+
+        await Friend.findByIdAndUpdate(req.params.id, { photo: file.name });
+
+        console.log(`profile updated with id ${req.params.id}`);
+
+        res.status(200).json({
+            status: "SUCCESS",
+            friend_name: responseObj.name,
+            photo: file.name
+
+        })
+
+
+    })
+
+
+
+
+});
 
 
 //rest controller to find nearby friends

@@ -10,7 +10,8 @@ const {
     deleteFriend,
     updateFriend,
     addFriend,
-    getFriendByDistance
+    getFriendByDistance,
+    uploadPhoto
 
 } = require("../controllers/friendsController");
 
@@ -30,6 +31,10 @@ router.route("/:id")
     .put(updateFriend)
     .delete(deleteFriend);
 
+
+//router for uploading a photo
+router.route("/:id/:photo")
+    .put(uploadPhoto);
 
 
 //to make the router work
