@@ -18,7 +18,7 @@ exports.getAllFriends = asyncHandler(async (req, res, next) => {
     const reqQuery = { ...req.query };
 
     //since mongo doesnt understand select in queries, we need to remove them
-    const removeFields = ["select"];
+    const removeFields = ["select", "sort"];
 
     removeFields.forEach(param => delete reqQuery[param]);
 
@@ -38,6 +38,15 @@ exports.getAllFriends = asyncHandler(async (req, res, next) => {
         const fields = req.query.select.split(",").join(' ');
         console.log(`Querying for select fields ${fields}`);
         query = query.select(fields);
+
+
+    }
+
+    if (req.query.sort) {
+        //remove all commas from select query and join by space, because this way is only required to us
+        const sortBy = req.query.sort.split(",").join(' ');
+        console.log(`Querying for sortby fields ${sortBy}`);
+        query = query.sort(sortBy);
 
 
     }
