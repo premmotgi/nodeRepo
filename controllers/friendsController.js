@@ -13,8 +13,37 @@ const geocoder = require("../commons/geocoder");
 //@access Public
 exports.getAllFriends = asyncHandler(async (req, res, next) => {
 
+    let query;
+    //query form in json 
+    const reqQuery = { ...req.query };
 
-    const responseObj = await Friend.find();
+    //since mongo doesnt understand select in queries, we need to remove them
+    const removeFields = ["select"];
+
+    removeFields.forEach(param => delete reqQuery[param]);
+
+    //converting into string
+    let queryStr = JSON.stringify(reqQuery);
+
+    //now if you want to perform any operation or updateion on query then you can do it by changing query and stuff
+    queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`);
+
+    //passing the query as json back again to mongo, we dont need to await for response here becz we will do it after we get this data
+    query = Friend.find(JSON.parse(queryStr));
+
+    console.log(query);
+
+    if (req.query.select) {
+        //remove all commas from select query and join by space, because this way is only required to us
+        const fields = req.query.select.split(",").join(' ');
+        console.log(`Querying for select fields ${fields}`);
+        query = query.select(fields);
+
+
+    }
+
+    const responseObj = await query;
+
     res.status(200).json({
         status: "SUCCESS",
         count: responseObj.length,

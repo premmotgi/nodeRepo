@@ -1,9 +1,10 @@
+//a lot of facilities are provided by expressjs which helps in manipulating data like query params and things
+//and then pass this ass a json to mongo. mongo and express works hands in hands
 const express = require("express");
 const dotenv = require("dotenv");
 const morganLogger = require("morgan");
 const connectRepo = require("./config/db");
 const errorHandler = require("./middlwares/ErrorHandler");
-
 const colors = require("colors");
 
 
