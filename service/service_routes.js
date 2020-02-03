@@ -2,6 +2,11 @@ const express = require("express");
 const router = express.Router();
 
 
+//use of advanced results
+const Friend = require("../model/friends");
+const advancedResults = require("../middlwares/advancedResults");
+
+
 //take all the a controllers and map to respective vars
 const {
 
@@ -21,8 +26,9 @@ router.route("/radius/:zipcode/:distance").get(getFriendByDistance);
 
 
 //calling each controller based on request url.
+//for get all first friend will execute and then get all friends will execute.
 router.route("/")
-    .get(getAllFriends)
+    .get(advancedResults(Friend, ""), getAllFriends)
     .post(addFriend);
 
 //based on request url and method the appropriate controller is called.
